@@ -1,0 +1,10 @@
+Delimiter !!
+CREATE TRIGGER trgAfterUpdate after update ON Employee
+for each row begin
+	UPDATE Employee_Audit2 SET Emp_Name = new.Emp_Name,
+    Emp_Sal = new.Emp_Sal,
+    Audit_Action = "Update After",
+    Audit_Timestamp = now()
+    Where Emp_ID = new.Emp_ID;
+end ;
+!!

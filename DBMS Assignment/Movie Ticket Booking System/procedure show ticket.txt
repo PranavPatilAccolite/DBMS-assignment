@@ -1,0 +1,14 @@
+delimiter &&
+create procedure show_ticket(in contact varchar(45))
+begin
+	select reservation.reservation_contact,movie.title, auditorium.name,employee.username,reservation_type.reservation_type,reservation.paid,seat.rowNum,seat.seatNum from reservation 
+    inner join screening on screening.id = reservation.screening_id
+    inner join movie on movie.id = screening.movie_id
+    inner join auditorium on auditorium.id = screening.auditorium_id
+    inner join seat_reserved on seat_reserved.reservation_id = reservation.id
+    inner join seat on seat.id = seat_reserved.seat_id
+    inner join employee on employee.id = reservation.employee_reserved_id
+    inner join reservation_type on reservation_type.id = reservation.reservation_typ_id
+    ;
+end
+&&

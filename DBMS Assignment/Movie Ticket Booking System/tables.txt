@@ -1,0 +1,153 @@
+create database movie;
+use  movie;
+
+-- -----------------------------------------------------
+-- Table movie.auditorium
+-- -----------------------------------------------------
+CREATE TABLE auditorium (
+  id INT NOT NULL,
+  name VARCHAR(45) NULL,
+  seats_no INT NULL,
+  PRIMARY KEY (id))
+;
+
+-- -----------------------------------------------------
+-- Table movie.employee
+-- -----------------------------------------------------
+CREATE TABLE employee (
+  id INT NOT NULL,
+  username VARCHAR(45) NULL,
+  password VARCHAR(45) NULL,
+  PRIMARY KEY (id))
+;
+
+-- -----------------------------------------------------
+-- Table movie.movie
+-- -----------------------------------------------------
+CREATE TABLE movie (
+  id INT NOT NULL,
+  title VARCHAR(256) NOT NULL,
+  director VARCHAR(256) NOT NULL,
+  cast VARCHAR(1024) NOT NULL,
+  description TEXT NOT NULL,
+  duration INT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE)
+;
+
+-- -----------------------------------------------------
+-- Table movie.screening
+-- -----------------------------------------------------
+CREATE TABLE screening (
+  id INT NOT NULL,
+  movie_id INT NULL,
+  auditorium_id INT NULL,
+  PRIMARY KEY (id),
+  INDEX id_idx (movie_id ASC) VISIBLE,
+  INDEX id_idx1 (auditorium_id ASC) VISIBLE,
+  CONSTRAINT id1
+    FOREIGN KEY (movie_id)
+    REFERENCES movie.movie (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT id2
+    FOREIGN KEY (auditorium_id)
+    REFERENCES movie.auditorium (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+;
+
+-- -----------------------------------------------------
+-- Table movie.reservation_type
+-- -----------------------------------------------------
+CREATE TABLE reservation_type (
+  id INT NOT NULL,
+  reservation_type VARCHAR(45) NULL,
+  PRIMARY KEY (id))
+;
+
+-- -----------------------------------------------------
+-- Table movie.reservation
+-- -----------------------------------------------------
+CREATE TABLE reservation (
+  id INT NOT NULL,
+  screening_id INT NULL,
+  employee_reserved_id INT NULL,
+  reservation_typ_id INT NULL,
+  reservation_contact VARCHAR(45) NULL,
+  reserved TINYINT NULL,
+  employee_paid_id INT NULL,
+  paid TINYINT NULL,
+  active TINYINT NULL,
+  PRIMARY KEY (id),
+  INDEX screening_id_idx (screening_id ASC) VISIBLE,
+  INDEX employee_reserved_id_idx (employee_reserved_id ASC) VISIBLE,
+  INDEX reservation_type_id_idx (reservation_typ_id ASC) VISIBLE,
+  INDEX employee_paid_id_idx (employee_paid_id ASC) VISIBLE,
+  CONSTRAINT screening_id
+    FOREIGN KEY (screening_id)
+    REFERENCES movie.screening (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT employee_reserved_id
+    FOREIGN KEY (employee_reserved_id)
+    REFERENCES movie.employee (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT reservation_type_id
+    FOREIGN KEY (reservation_typ_id)
+    REFERENCES movie.reservation_type (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT employee_paid_id
+    FOREIGN KEY (employee_paid_id)
+    REFERENCES movie.employee (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+;
+
+-- -----------------------------------------------------
+-- Table movie.seat
+-- -----------------------------------------------------
+CREATE TABLE seat (
+  id INT NOT NULL,
+  rowNum INT NULL,
+  seatNum INT NULL,
+  auditorium_id INT NULL,
+  PRIMARY KEY (id),
+  INDEX auditorium_id_idx (auditorium_id ASC) VISIBLE,
+  CONSTRAINT auditorium_id
+    FOREIGN KEY (auditorium_id)
+    REFERENCES movie.auditorium (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+;
+
+-- -----------------------------------------------------
+-- Table movie.seat_reserved
+-- -----------------------------------------------------
+CREATE TABLE seat_reserved ( 
+  id INT NOT NULL,
+  seat_id INT NULL,
+  reservation_id INT NULL,
+  screening_id INT NULL,
+  PRIMARY KEY (id),
+  INDEX screening_id_idx (screening_id ASC) VISIBLE,
+  INDEX seat_id_idx (seat_id ASC) VISIBLE,
+  INDEX reservation_id_idx (reservation_id ASC) VISIBLE,
+  CONSTRAINT screening_id1
+    FOREIGN KEY (screening_id)
+    REFERENCES movie.screening (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT seat_id
+    FOREIGN KEY (seat_id)
+    REFERENCES movie.seat (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT reservation_id
+    FOREIGN KEY (reservation_id)
+    REFERENCES movie.reservation (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+;

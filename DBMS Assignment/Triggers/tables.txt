@@ -1,0 +1,34 @@
+create DATABASE Employment;
+use Employment;
+
+SET SQL_SAFE_UPDATES = 0;
+
+CREATE TABLE Employee
+(
+ Emp_ID int not null auto_increment,
+ Emp_Name varchar(55),
+ Emp_Sal decimal (10,2),
+ primary key(Emp_ID)
+);
+
+create table Employee_Audit1 
+(
+ Emp_ID int,
+ Audit_ID int not null auto_increment,
+ Emp_Name varchar(55),
+ Emp_Sal decimal(10,2),
+ Audit_Action varchar(100),
+ Audit_Timestamp datetime,
+ primary key(Audit_ID)
+) ;
+
+create table Employee_Audit2 
+(
+ Emp_ID int,
+ Audit_ID int not null auto_increment,
+ Emp_Name varchar(55),
+ Emp_Sal decimal(10,2),
+ Audit_Action varchar(100),
+ Audit_Timestamp datetime,
+ primary key(Audit_ID)
+) ;

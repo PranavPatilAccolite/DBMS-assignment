@@ -1,0 +1,6 @@
+Delimiter $$ 
+CREATE TRIGGER trgAfterInsert after insert ON Employee
+for each row begin
+	Insert into Employee_Audit2(Emp_ID,Emp_Name,Emp_Sal,Audit_Action,Audit_Timestamp) values (new.Emp_ID,new.Emp_Name,new.Emp_Sal,"After Insert",now());
+end ;
+$$

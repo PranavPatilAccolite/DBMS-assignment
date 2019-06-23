@@ -1,0 +1,10 @@
+Delimiter ##
+CREATE TRIGGER trgAfterDelete after delete ON Employee
+for each row begin
+	UPDATE Employee_Audit2 SET Emp_Name = old.Emp_Name,
+    Emp_Sal = old.Emp_Sal,
+    Audit_Action = "Delete After",
+    Audit_Timestamp = now()
+    Where Emp_ID = old.Emp_ID;
+end ;
+##

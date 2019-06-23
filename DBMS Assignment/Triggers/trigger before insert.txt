@@ -1,0 +1,8 @@
+Delimiter // 
+CREATE TRIGGER trgBeforeInsert before insert ON Employee
+for each row begin
+	declare vUser Int;
+	SELECT max(Emp_ID) from Employee INTO vUser;
+	Insert into Employee_Audit1(Emp_ID,Emp_Name,Emp_Sal,Audit_Action,Audit_Timestamp) values (vUser + 1,new.Emp_Name,new.Emp_Sal,"Before Insert",now());
+end ;
+//

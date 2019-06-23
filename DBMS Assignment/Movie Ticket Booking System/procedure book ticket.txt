@@ -1,0 +1,23 @@
+DELIMITER $$  
+CREATE PROCEDURE book_ticket(in movie varchar(45), in auditorium varchar(45), in rowNum int, in seatNum int, in reservation_type varchar(45), in contact varchar(45))
+BEGIN 
+	declare movieId int;
+    declare auditoriumId int;
+    declare screeningId int;
+    declare seatId int;
+    declare reservationtypeId int;
+    declare reservationId int;
+    
+    select id from movie where movie.title =movie into movieId;
+    select id from auditorium where auditorium.name =auditorium into auditoriumId;
+    select id from seat where (seat.auditorium_id =auditoriumId and seat.seatNum = seatNum and seat.rowNum = rowNum) into seatId;
+    select id from screening where(screening.movie_id = movieId and screening.auditorium_id = auditoriumId) into screeningId;
+    select id from reservation_type where(reservation_type.reservation_type = reservation_type) into reservationtypeId;
+    
+    insert into reservation(id,screening_id,employee_reserved_id,reservation_typ_id,reservation_contact,reserved,employee_paid_id,paid,active) values(1, screeningId,1,reservationtypeID,contact,true,1,true,true);
+    
+    select id from reservation where reservation.reservation_contact = contact into reservationId;
+    
+    insert into seat_reserved(id, seat_id,reservation_id,screening_id) values(1,seatId,reservationId,screeningId);
+END
+$$  
